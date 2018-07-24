@@ -19,34 +19,61 @@ const state = {
   email: ''
 }
 const mutations = {
-  updateName (state, name) {
+  SET_NAME (state, name) {
     state.name = name.toLowerCase()
   },
-  updateLastName (state, lastName) {
+  SET_LASTNAME (state, lastName) {
     state.lastName = lastName.toLowerCase()
   },
-  updateGender (state, gender) {
+  SET_GENDER (state, gender) {
     state.gender = gender
   },
-  updateDoc (state, doc) {
+  SET_TYPE_DOCUMENT (state, doc) {
     state.doc = doc
   },
-  updateNumber (state, number) {
+  SET_NUMBER_DOCCUMENT (state, number) {
     state.number = number
   },
-  updateBlood (state, blood) {
+  SET_TYPE_BLOOD (state, blood) {
     state.blood = blood
   },
-  updateTel (state, tel) {
+  SET_PHONE (state, tel) {
     state.tel = tel
   },
-  updateEmail (state, email) {
+  SET_EMAIL (state, email) {
     state.email = email
   }
 }
 
+const actions = {
+  setName: ({commit}, name) => {
+    commit('SET_NAME', name)
+  },
+  setLastname: ({commit}, lastName) => {
+    commit('SET_LASTNAME', lastName)
+  },
+  setGender: ({commit}, gender) => {
+    commit('SET_GENDER', gender)
+  },
+  setTypeDocument: ({commit}, typeDocument) => {
+    commit('SET_TYPE_DOCUMENT', typeDocument)
+  },
+  setNumberDocument: ({commit}, NumberDocument) => {
+    commit('SET_NUMBER_DOCCUMENT', NumberDocument)
+  },
+  setTypeBlood: ({commit}, typeBlood) => {
+    commit('SET_TYPE_BLOOD', typeBlood)
+  },
+  setPhone: ({commit}, phone) => {
+    commit('SET_PHONE', phone)
+  },
+  setEmail: ({commit}, email) => {
+    commit('SET_EMAIL', email)
+  }
+}
+
 const store = new Vuex.Store({
-  state, mutations, plugins: [vuexLocal.plugin]
+  state, mutations, actions, plugins: [vuexLocal.plugin]
 })
 
 export default store

@@ -11,13 +11,12 @@
               <v-flex xs12 sm2>
                 <v-avatar
                   size="80px"
-            >
-              <img
-                :src='avatar'
-                :alt="avatar"
-              >
-            </v-avatar>
-                <!-- <v-btn fab dark large color="primary"><v-icon large>account_circle</v-icon></v-btn> -->
+                >
+                  <img
+                    :src="avatar"
+                    :alt="avatar"
+                  >
+                </v-avatar>
               </v-flex>
               <!-- start name -->
               <v-flex xs12 sm5>
@@ -25,8 +24,9 @@
                   v-model="user.name"
                   label="Nombre"
                   hint="Por favor escriba su nombre"
+                  maxlength="10"
                   required
-                  @keyup="$store.commit('updateName', user.name)"
+                  @keyup="$store.dispatch('setName', user.name)"
                   >
                 </v-text-field>
               </v-flex>
@@ -36,9 +36,10 @@
                 <v-text-field
                   label="Apellidos"
                   hint="Por favor escriba su apellido"
+                  maxlength="10"
                   required
                   v-model="user.lastName"
-                  @keyup="$store.commit('updateLastName', user.lastName)"
+                  @keyup="$store.dispatch('setLastname', user.lastName)"
                 ></v-text-field>
               </v-flex>
               <!-- end lastName -->
@@ -48,7 +49,7 @@
                   v-model="user.gender"
                   class="elevation-0" 
                   mandatory
-                  @change="$store.commit('updateGender', user.gender)"
+                  @change="$store.dispatch('setGender', user.gender)"
                   :value='user.gender = $store.state.gender'
                 >
                     <v-btn style="border-radius: 3px;border:1px solid #26C6DA; margin-right: 15px; " value="Femenino" small outline color="primary"><v-icon small style="margin-left: 2px; margin-right: 8px;">fas fa-female</v-icon>Femenino</v-btn>
@@ -56,23 +57,24 @@
                 </v-btn-toggle>
               </v-flex>
               <!-- end gender -->
-              <!-- start id-passport -->
+              <!-- start type dpcument -->
                 <v-flex xs12 sm6 >
                   <v-select
                     v-model= "user.doc"
                     :items="type"
                     label="Tipo de identificación"
-                    @change="$store.commit('updateDoc', user.doc)"
+                    @change="$store.dispatch('setTypeDocument', user.doc)"
                   ></v-select>
                 </v-flex>
-                <!-- end id-passport -->
+                <!-- end type document -->
                 <!-- start number document -->
                 <v-flex xs12 sm6>
                   <v-text-field
-                  v-model="user.number"
+                    maxlength="10"
+                    v-model="user.number"
                     name="name"
                     label="Número de identificación"
-                    @keyup="$store.commit('updateNumber', user.number)"
+                    @keyup="$store.dispatch('setNumberDocument', user.number)"
                     :rules="[rules.required, rules.doc]"
                   ></v-text-field>
                 </v-flex>
@@ -91,7 +93,7 @@
                   v-model="user.blood" 
                   class="elevation-0" 
                   mandatory
-                  @change="$store.commit('updateBlood', user.blood)"
+                  @change="$store.dispatch('setTypeBlood', user.blood)"
                   :value='user.blood = $store.state.blood'
                 >
                     <v-btn style="border-radius: 3px;border:1px solid #26C6DA; margin-right: 10px;" value="O+" small outline color="primary">O+</v-btn>
@@ -106,10 +108,10 @@
                 </v-btn-toggle>
               <!-- end type blood -->
               </v-flex>
-              <v-flex xs12 >
+              <v-flex xs12>
                 <v-card-title style="padding-left:0;" primary-title>
                   <div>
-                    <h3 class="title mb-0">Datos personales</h3>
+                    <h3 class="title mb-0">Datos de contacto</h3>
                   </div>
                 </v-card-title>
               </v-flex>
@@ -118,13 +120,26 @@
                 <v-select
                   v-model="user.medio"
                   :items="telefono"
-                  label="Tel"
-                  ></v-select>
+                  label="Teléfono"
+                  >
+                  <template slot="selection" slot-scope="data">
+                    <v-flex xs1 style="padding: 0">
+                      <v-avatar size="25px">
+                        <v-icon>{{data.item}}</v-icon>
+                      </v-avatar>
+                    </v-flex>
+                  </template>
+                  <template slot="item" slot-scope="data">
+                    <v-list-tile-avatar>
+                      <v-icon>{{data.item}}</v-icon>
+                    </v-list-tile-avatar>
+                  </template>
+                </v-select>
               </v-flex>
               <v-flex xs2 style="padding: 0">
                 <v-select
                   placeholder="Codigo"
-                  :items="user.medio == 'Fijo' ? fijo: movil"
+                  :items="user.medio === 'fas fa-phone' ? fijo: movil"
                   v-model="user.codigo"
                   ></v-select>
               </v-flex>
@@ -136,7 +151,7 @@
                   placeholder="5555555"
                   required
                   :rules="[rules.required, rules.phone]"
-                  @keyup="$store.commit('updateTel', user.codigo + user.tel)"
+                  @keyup="$store.dispatch('setPhone', user.codigo + user.tel)"
                 ></v-text-field>
               </v-flex>
               <!-- end phone -->
@@ -147,7 +162,7 @@
                   required
                   v-model="user.email"
                   :rules="[rules.required, rules.email]"
-                  @keyup="$store.commit('updateEmail', user.email)"
+                  @keyup="$store.dispatch('setEmail', user.email)"
                 >
                 </v-text-field>
               </v-flex>
@@ -167,7 +182,7 @@
 </template>
 
 <script>
-import def from '../../public/default.png'
+import defaultAvatar from '../../public/avatar.png'
 export default {
   data () {
     return {
@@ -183,9 +198,9 @@ export default {
         codigo: '',
         tel: '',
       } ,
-      avatar: '',
+      avatar: defaultAvatar,
       type: ['Pasaporte', 'Cedula'],
-      telefono: ['Movil', 'Fijo'],
+      telefono: ['fas fa-phone', 'fas fa-mobile-alt'],
       fijo: [ '0251', '0212', '0273'],
       movil: ['0416', '0426', '0414', '0424', '0412'],
       rules: {
@@ -204,17 +219,7 @@ export default {
           }
       }
     }
-  },
-  mounted() {
-    if (this.$store.state.name === ''){
-      this.avatar = def
-    } else {
-    const fullName = `${this.$store.state.name}%20${this.$store.state.lastName}`
-    this.avatar = `https://ui-avatars.com/api/?background=26C6DA&name=${fullName}`
-    }
   }
 }
 </script>
 
-<style scoped>
-</style>
