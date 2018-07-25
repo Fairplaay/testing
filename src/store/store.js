@@ -12,11 +12,28 @@ const state = {
   name: '',
   lastName: '',
   gender: '',
-  doc: '',
-  number: '',
+  documentOne: '',
+  numberOne: '',
+  documentTwo: '',
+  numberTwo: '',
   blood: '',
   tel: '',
-  email: ''
+  email: '',
+  rules: {
+    required: value => !!value || 'Requerido.',
+    email: value => {
+      const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return pattern.test(value) || 'Correo invalido'
+    },
+    phone: value => {
+      const pattern = /[0-9]{7}/; // /[0-9]{10}/
+      return pattern.test(value) || 'Inserte solo numeros y un minimo de 7 numeros'
+    },
+    doc: value => {
+      const pattern = /[0-9]/
+      return pattern.test(value) || 'Solo numeros por favor'
+    }
+  }
 }
 const mutations = {
   SET_NAME (state, name) {
@@ -28,11 +45,21 @@ const mutations = {
   SET_GENDER (state, gender) {
     state.gender = gender
   },
-  SET_TYPE_DOCUMENT (state, doc) {
-    state.doc = doc
+  SET_TYPE_DOCUMENT_ONE (state, doc) {
+    state.documentOne = doc
   },
-  SET_NUMBER_DOCCUMENT (state, number) {
-    state.number = number
+  SET_NUMBER_DOCUMENT_ONE (state, number) {
+    state.numberOne = number
+  },
+  SET_TYPE_DOCUMENT_TWO (state, doc) {
+    state.documentTwo = doc
+  },
+  SET_NUMBER_DOCUMENT_TWO (state, number) {
+    state.numberTwo = number
+  },
+  CLEAR_DOCUMENT (state) {
+    state.documentTwo = null
+    state.numberTwo = null
   },
   SET_TYPE_BLOOD (state, blood) {
     state.blood = blood
@@ -55,11 +82,20 @@ const actions = {
   setGender: ({commit}, gender) => {
     commit('SET_GENDER', gender)
   },
-  setTypeDocument: ({commit}, typeDocument) => {
-    commit('SET_TYPE_DOCUMENT', typeDocument)
+  setTypeDocumentOne: ({commit}, doc) => {
+    commit('SET_TYPE_DOCUMENT_ONE', doc)
   },
-  setNumberDocument: ({commit}, NumberDocument) => {
-    commit('SET_NUMBER_DOCCUMENT', NumberDocument)
+  setNumberDocumentOne: ({commit}, doc) => {
+    commit('SET_NUMBER_DOCUMENT_ONE', doc)
+  },
+  setTypeDocumentTwo: ({commit}, doc) => {
+    commit('SET_TYPE_DOCUMENT_TWO', doc)
+  },
+  setNumberDocumentTwo: ({commit}, doc) => {
+    commit('SET_NUMBER_DOCUMENT_TWO', doc)
+  },
+  clearDocument: ({commit}) => {
+    commit('CLEAR_DOCUMENT')
   },
   setTypeBlood: ({commit}, typeBlood) => {
     commit('SET_TYPE_BLOOD', typeBlood)

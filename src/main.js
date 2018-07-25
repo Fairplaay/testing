@@ -21,7 +21,9 @@ import {
   VBtnToggle
 } from 'vuetify'
 import App from './App.vue'
+import VueUploadComponent from 'vue-upload-component'
 
+Vue.component('file-upload', VueUploadComponent)
 require('../node_modules/vuetify/src/stylus/app.styl')
 
 Vue.use(Vuetify, {
