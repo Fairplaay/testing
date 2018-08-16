@@ -6,7 +6,7 @@
       scroll-off-screen
       scroll-target="#scrolling-techniques"
     >
-      <v-toolbar-title>Vue cli 3</v-toolbar-title>
+      <v-toolbar-title>title</v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
     <v-content>
